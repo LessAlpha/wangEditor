@@ -301,7 +301,8 @@ UploadImg.prototype = {
         }
 
         // ------------------------------ 显示 base64 格式 ------------------------------
-        if (uploadImgShowBase64) {
+        if (uploadImgShowBase64) {// TODO 压缩图片处理
+            console.log('TODO depress image')
             arrForEach(files, file => {
                 const _this = this
                 const reader = new FileReader()

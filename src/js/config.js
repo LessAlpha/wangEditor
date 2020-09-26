@@ -162,7 +162,7 @@ const config = {
     // },
 
     // 是否显示添加网络图片的 tab
-    showLinkImg: true,
+    showLinkImg: false,
 
     // 插入网络图片的回调
     linkImgCallback: function (url) {
@@ -176,7 +176,7 @@ const config = {
     // uploadImgMaxLength: 5,
 
     // 上传图片，是否显示 base64 格式
-    uploadImgShowBase64: false,
+    uploadImgShowBase64: true,
 
     // 上传图片，server 地址（如果有值，则 base64 格式的配置则失效）
     // uploadImgServer: '/upload',

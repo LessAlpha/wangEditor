@@ -137,7 +137,7 @@ Image.prototype = {
         const tabsConfig = [
             {
                 title: '上传图片',
-                tpl: `<div class="w-e-up-img-container">
+                tpl: `<div class="w-e-up-img-container" style="display:none;">
                     <div id="${upTriggerId}" class="w-e-up-btn">
                         <i class="w-e-icon-upload2"></i>
                     </div>
@@ -233,6 +233,12 @@ Image.prototype = {
 
         // 记录属性
         this.panel = panel
+
+        const $file = $('#' + upFileId)
+        const fileElem = $file[0]
+        if (fileElem) {
+            fileElem.click()
+        }
     },
 
     // 试图改变 active 状态

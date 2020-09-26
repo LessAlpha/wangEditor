@@ -40,6 +40,7 @@ editor.create()
 - 安装包完成之后，windows 用户运行`npm run win-example`，Mac 用户运行`npm run example`
 - 打开浏览器访问[localhost:3000/index.html](http://localhost:3000/index.html)
 - 用于 React、vue 或者 angular 可查阅[文档](http://www.kancloud.cn/wangfupeng/wangeditor3/332599)中[其他](https://www.kancloud.cn/wangfupeng/wangeditor3/335783)章节中的相关介绍
+- 运行yarn release时nodejs版本需要在10.x
 
 ## 交流
 
