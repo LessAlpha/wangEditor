@@ -209,9 +209,21 @@ Text.prototype = {
                 // 有内容，不做处理
                 return
             }
-
             // 插入 <p> ，并将选取定位到 <p>，删除当前标签
             insertEmptyP($selectionElem)
+        }
+
+        function spanHandler(e) {
+            const $selectionElem = editor.selection.getSelectionContainerElem()
+            const nodeName = $selectionElem.getNodeName()
+            if(nodeName!=='SPAN') {
+                return
+            }
+            const $p = $('<br>')
+            $p.insertBefore($selectionElem)
+            editor.selection.createRangeByElem($p, true)
+            editor.selection.restoreSelection()
+            $selectionElem.remove()
         }
 
         $textElem.on('keyup', e => {
@@ -221,6 +233,8 @@ Text.prototype = {
             }
             // 将回车之后生成的非 <p> 的顶级标签，改为 <p>
             pHandle(e)
+            // 将会车之后生成的span标签改为<br>，因为span标签带有相关格式化样式
+            spanHandler(e)
         })
 
         // <pre><code></code></pre> 回车时 特殊处理

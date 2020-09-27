@@ -137,7 +137,7 @@ Image.prototype = {
         const tabsConfig = [
             {
                 title: '上传图片',
-                tpl: `<div class="w-e-up-img-container" style="display:none;">
+                tpl: `<div class="w-e-up-img-container">
                     <div id="${upTriggerId}" class="w-e-up-btn">
                         <i class="w-e-icon-upload2"></i>
                     </div>

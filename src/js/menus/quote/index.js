@@ -31,9 +31,11 @@ Quote.prototype = {
             if (nodeName === 'BLOCKQUOTE') {
                 // 撤销 quote
                 editor.cmd.do('formatBlock', '<P>')
+                console.log('撤销 quote')
             } else {
                 // 转换为 quote
                 editor.cmd.do('formatBlock', '<BLOCKQUOTE>')
+                console.log('转换为 quote')
             }
             return
         }

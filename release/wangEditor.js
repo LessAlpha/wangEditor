@@ -607,7 +607,7 @@ var config = {
     zIndex: 10000,
 
     // 是否开启 debug 模式（debug 模式下错误会 throw error 形式抛出）
-    debug: false,
+    debug: true,
 
     // 插入链接时候的格式校验
     linkCheck: function linkCheck(text, link) {
@@ -1097,6 +1097,12 @@ FontSize.prototype = {
     // 执行命令
     _command: function _command(value) {
         var editor = this.editor;
+        var isSeleEmpty = editor.selection.isSelectionEmpty();
+
+        if (isSeleEmpty) {
+            // 选区是空的，插入并选中一个“空白”
+            editor.selection.createEmptyRange();
+        }
         editor.cmd.do('fontSize', value);
     }
 };
@@ -1141,6 +1147,12 @@ FontName.prototype = {
 
     _command: function _command(value) {
         var editor = this.editor;
+        var isSeleEmpty = editor.selection.isSelectionEmpty();
+
+        if (isSeleEmpty) {
+            // 选区是空的，插入并选中一个“空白”
+            editor.selection.createEmptyRange();
+        }
         editor.cmd.do('fontName', value);
     }
 };
@@ -1863,6 +1875,12 @@ ForeColor.prototype = {
     // 执行命令
     _command: function _command(value) {
         var editor = this.editor;
+        var isSeleEmpty = editor.selection.isSelectionEmpty();
+
+        if (isSeleEmpty) {
+            // 选区是空的，插入并选中一个“空白”
+            editor.selection.createEmptyRange();
+        }
         editor.cmd.do('foreColor', value);
     }
 };
@@ -1907,6 +1925,12 @@ BackColor.prototype = {
     // 执行命令
     _command: function _command(value) {
         var editor = this.editor;
+        var isSeleEmpty = editor.selection.isSelectionEmpty();
+
+        if (isSeleEmpty) {
+            // 选区是空的，插入并选中一个“空白”
+            editor.selection.createEmptyRange();
+        }
         editor.cmd.do('backColor', value);
     }
 };
@@ -1937,9 +1961,11 @@ Quote.prototype = {
             if (nodeName === 'BLOCKQUOTE') {
                 // 撤销 quote
                 editor.cmd.do('formatBlock', '<P>');
+                console.log('撤销 quote');
             } else {
                 // 转换为 quote
                 editor.cmd.do('formatBlock', '<BLOCKQUOTE>');
+                console.log('转换为 quote');
             }
             return;
         }
@@ -2755,7 +2781,7 @@ Image.prototype = {
         // tabs 的配置
         var tabsConfig = [{
             title: '上传图片',
-            tpl: '<div class="w-e-up-img-container" style="display:none;">\n                    <div id="' + upTriggerId + '" class="w-e-up-btn">\n                        <i class="w-e-icon-upload2"></i>\n                    </div>\n                    <div style="display:none;">\n                        <input id="' + upFileId + '" type="file" multiple="multiple" accept="image/jpg,image/jpeg,image/png,image/gif,image/bmp"/>\n                    </div>\n                </div>',
+            tpl: '<div class="w-e-up-img-container">\n                    <div id="' + upTriggerId + '" class="w-e-up-btn">\n                        <i class="w-e-icon-upload2"></i>\n                    </div>\n                    <div style="display:none;">\n                        <input id="' + upFileId + '" type="file" multiple="multiple" accept="image/jpg,image/jpeg,image/png,image/gif,image/bmp"/>\n                    </div>\n                </div>',
             events: [{
                 // 触发选择图片
                 selector: '#' + upTriggerId,
@@ -3321,9 +3347,21 @@ Text.prototype = {
                 // 有内容，不做处理
                 return;
             }
-
             // 插入 <p> ，并将选取定位到 <p>，删除当前标签
             insertEmptyP($selectionElem);
+        }
+
+        function spanHandler(e) {
+            var $selectionElem = editor.selection.getSelectionContainerElem();
+            var nodeName = $selectionElem.getNodeName();
+            if (nodeName !== 'SPAN') {
+                return;
+            }
+            var $p = $('<br>');
+            $p.insertBefore($selectionElem);
+            editor.selection.createRangeByElem($p, true);
+            editor.selection.restoreSelection();
+            $selectionElem.remove();
         }
 
         $textElem.on('keyup', function (e) {
@@ -3333,6 +3371,8 @@ Text.prototype = {
             }
             // 将回车之后生成的非 <p> 的顶级标签，改为 <p>
             pHandle(e);
+            // 将会车之后生成的span标签改为<br>，因为span标签带有相关格式化样式
+            spanHandler(e);
         });
 
         // <pre><code></code></pre> 回车时 特殊处理

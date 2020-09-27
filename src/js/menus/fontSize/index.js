@@ -41,6 +41,12 @@ FontSize.prototype = {
     // 执行命令
     _command: function (value) {
         const editor = this.editor
+        const isSeleEmpty = editor.selection.isSelectionEmpty()
+
+        if (isSeleEmpty) {
+            // 选区是空的，插入并选中一个“空白”
+            editor.selection.createEmptyRange()
+        }
         editor.cmd.do('fontSize', value)
     }
 }
